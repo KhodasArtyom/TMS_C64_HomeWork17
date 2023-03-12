@@ -6,18 +6,18 @@ import java.util.Arrays;
 
 public class ChatService implements ChatMethods {
     private int messageLimit;
-    private Duration duration;
+    private Duration timeLimit;
     private Message[] historyOfMessage;
 
-    public ChatService(int messageLimit, Duration duration) {
-        if (duration.compareTo(Duration.ZERO) <= 0) {
+    public ChatService(int messageLimit, Duration timeLimit) {
+        if (timeLimit.compareTo(Duration.ZERO) <= 0) {
             throw new IllegalArgumentException("time should be positive");
         }
-        if (messageLimit <= 0) {
+        if (messageLimit <= 0 ) {
             throw new IllegalArgumentException("message limit should e positive");
         }
         this.messageLimit = messageLimit;
-        this.duration = duration;
+        this.timeLimit = timeLimit;
         this.historyOfMessage = new Message[0];
 
     }
@@ -27,7 +27,7 @@ public class ChatService implements ChatMethods {
     }
 
     public Duration getDuration() {
-        return duration;
+        return timeLimit;
     }
 
 
@@ -48,6 +48,9 @@ public class ChatService implements ChatMethods {
     @Override
     public boolean writeMessage(User author, String content) {
         Instant createInstant = Instant.now();
+        if(exceedRateLimiting(author,createInstant)) {
+            return false;
+        }
         Message newMessage = new Message(author, content, createInstant);
         saveMessage(newMessage);
         return true;

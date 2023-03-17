@@ -1,8 +1,6 @@
-package by.teachMeSkills.KhodasArtyom.HomeWork17;
+package by.teachMeSkills.khodasArtyom.homeWork17;
 
 import java.time.Instant;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class Message {
 

@@ -1,4 +1,4 @@
-package by.teachMeSkills.KhodasArtyom.HomeWork17;
+package by.teachMeSkills.khodasArtyom.homeWork17;
 
 public class User {
     private final String login;

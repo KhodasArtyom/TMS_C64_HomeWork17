@@ -1,10 +1,9 @@
-package by.teachMeSkills.KhodasArtyom.HomeWork17;
+package by.teachMeSkills.khodasArtyom.homeWork17;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class HomeWork17 {
@@ -28,9 +27,9 @@ public class HomeWork17 {
                             %s - %s
                             % s
                             ===========
-                            """,message.getAuthor(),message.getMessage(),message.getTime()
+                            """, message.getAuthor(), message.getMessage(), message.getTime()
                             .atZone(ZoneId.of("Europe/Minsk"))
-                            .format(DateTimeFormatter.ofPattern("HH:mm")),message.getMessage());
+                            .format(DateTimeFormatter.ofPattern("HH:mm")), message.getMessage());
                 }
             } else {
                 User user = new User(input);
@@ -40,8 +39,8 @@ public class HomeWork17 {
                         %s - %s
                         %s
                         ============
-                        """,user.getLogin(),message,Instant.now().atZone(ZoneId.of("Europe/Minsk")).
-                        format(DateTimeFormatter.ofPattern("HH:mm")));
+                        """, user.getLogin(), message, Instant.now().atZone(ZoneId.of("Europe/Minsk"))
+                        .format(DateTimeFormatter.ofPattern("HH:mm")));
                 chatService.writeMessage(user, message);
                 if (chatService.exceedRateLimiting(user, Instant.now())) {
                     System.out.println("Too many messages");

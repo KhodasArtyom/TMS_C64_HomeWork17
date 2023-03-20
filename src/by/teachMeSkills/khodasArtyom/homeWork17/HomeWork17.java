@@ -14,7 +14,7 @@ public class HomeWork17 {
         while (true) {
             System.out.println("Enter history if you want to see a history of comments or enter user and message");
             System.out.println("""
-                    1.History
+                    1.HistoryOfChat
                     2.Chat
                     """);
 

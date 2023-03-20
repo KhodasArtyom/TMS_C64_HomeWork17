@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class HomeWork17 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UserRateLimitingException {
         Scanner scanner = new Scanner(System.in);
-        ChatService chatService = new ChatService(2, Duration.ofSeconds(15));
+        ChatService chatService = new ChatService(3, Duration.ofSeconds(15));
 
         while (true) {
             System.out.println("Enter history if you want to see a history of comments or enter user and message");
@@ -25,9 +25,10 @@ public class HomeWork17 {
                     Message message = history[i];
                     System.out.printf("""
                             %s - %s
-                            % s
+                            %s
                             ===========
-                            """, message.getAuthor(), message.getMessage(), message.getTime()
+                            Received
+                            """, message.getAuthor().getLogin(), message.getMessage(), message.getTime()
                             .atZone(ZoneId.of("Europe/Minsk"))
                             .format(DateTimeFormatter.ofPattern("HH:mm")), message.getMessage());
                 }
@@ -41,9 +42,14 @@ public class HomeWork17 {
                         ============
                         """, user.getLogin(), message, Instant.now().atZone(ZoneId.of("Europe/Minsk"))
                         .format(DateTimeFormatter.ofPattern("HH:mm")));
-                chatService.writeMessage(user, message);
-                if (chatService.exceedRateLimiting(user, Instant.now())) {
-                    System.out.println("Too many messages");
+                try {
+                    chatService.writeMessage(user, message);
+                    chatService.exceedRateLimiting(user, Instant.now());
+
+
+                } catch (UserRateLimitingException e) {
+                    System.out.println("Too many requests.Repeat after " + Duration.between(Instant.now(),e
+                            .getLimitedUntil()).toSeconds());
                 }
 
             }

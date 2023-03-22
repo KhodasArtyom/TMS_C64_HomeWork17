@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class HomeWork17 {
-    public static void main(String[] args) throws UserRateLimitingException {
+    public static void main(String[] args)  {
         Scanner scanner = new Scanner(System.in);
         ChatService chatService = new ChatService(3, Duration.ofSeconds(15));
 
@@ -44,11 +44,9 @@ public class HomeWork17 {
                         .format(DateTimeFormatter.ofPattern("HH:mm")));
                 try {
                     chatService.writeMessage(user, message);
-                    chatService.exceedRateLimiting(user, Instant.now());
-
 
                 } catch (UserRateLimitingException e) {
-                    System.out.println("Too many requests.Repeat after " + Duration.between(Instant.now(),e
+                    System.out.println("Too many requests.Repeat after " + Duration.between(Instant.now(), e
                             .getLimitedUntil()).toSeconds());
                 }
 

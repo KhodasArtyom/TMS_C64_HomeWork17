@@ -45,14 +45,14 @@ public class ChatService {
 
     public boolean writeMessage(User author, String content) throws UserRateLimitingException {
         Instant createInstant = Instant.now();
-        exceedRateLimiting(author, createInstant);
+        validateExceedRateLimiting(author, createInstant);
         Message newMessage = new Message(author, content, createInstant);
         saveMessage(newMessage);
         return true;
     }
 
 
-    public void exceedRateLimiting(User author, Instant createdInstant) throws UserRateLimitingException {
+    public void validateExceedRateLimiting(User author, Instant createdInstant) throws UserRateLimitingException {
         Instant checkFrom = createdInstant.minus(getDuration());
         int count = 0;
         for (int i = historyOfMessage.length - 1; i >= 0; i--) {

@@ -43,33 +43,31 @@ public class ChatService {
     }
 
 
-    public boolean writeMessage(User author, String content) {
+    public boolean writeMessage(User author, String content) throws UserRateLimitingException {
         Instant createInstant = Instant.now();
-        if (exceedRateLimiting(author, createInstant)) {
-            return false;
-        }
+        validateExceedRateLimiting(author, createInstant);
         Message newMessage = new Message(author, content, createInstant);
         saveMessage(newMessage);
         return true;
     }
 
 
-    boolean exceedRateLimiting(User author, Instant createdInstant) {
+    public void validateExceedRateLimiting(User author, Instant createdInstant) throws UserRateLimitingException {
         Instant checkFrom = createdInstant.minus(getDuration());
         int count = 0;
         for (int i = historyOfMessage.length - 1; i >= 0; i--) {
             Message message = historyOfMessage[i];
             if (message.getTime().isBefore(checkFrom)) {
-                return false;
+                return;
             }
             if (message.getAuthor().getLogin().equals(author.getLogin())) {
                 count++;
-                if (count == getMessageLimit()) {
-                    return true;
+                if (count == messageLimit) {
+                    throw new UserRateLimitingException(message.getTime().plus(getDuration()));
                 }
             }
         }
-        return false;
+
     }
 
 
